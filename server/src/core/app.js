@@ -28,8 +28,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Routes
 
 const authRouter = require("./../modules/auth/auth.routes");
+const schoolRouter = require("./../modules/school/school.routes");
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/school', schoolRouter);
 
 
 // Unhandled routes
