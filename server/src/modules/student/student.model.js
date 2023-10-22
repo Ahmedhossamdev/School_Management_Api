@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const StudentSchema = new Schema({
+const studentSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -35,9 +35,22 @@ const StudentSchema = new Schema({
     classroom: {
         type: Schema.Types.ObjectId,
         ref: 'Classroom'
+    },
+    school: {
+        type: Schema.Types.ObjectId,
+        ref: 'School'
     }
 });
 
-const Student = mongoose.model('Student', StudentSchema);
 
+studentSchema.pre(/^find/ , function(next) {
+    this.populate({
+        path: 'school',
+    });
+    next();
+});
+
+
+
+const Student = mongoose.model('Student', studentSchema);
 module.exports = Student;

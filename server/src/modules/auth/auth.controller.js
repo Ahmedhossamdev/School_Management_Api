@@ -5,7 +5,7 @@ const {
     verifyRefreshToken
 } = require('./../../shared/helpers/jwt_helper')
 
-const User = require('../../modules/user/userModel');
+const User = require('../user/user.model');
 const client = require('./../../shared/helpers/inti_redis');
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {promisify} = require('util');
@@ -57,6 +57,7 @@ exports.signin = catchAsync(async (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         created_at: user.created_at,
     }, {access_token: access_token, refresh_token: refresh_token});
 
