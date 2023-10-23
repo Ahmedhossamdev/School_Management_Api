@@ -6,6 +6,9 @@
   "target": {
     "main": false
   },
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "test": "jest",
     "dev": "supervisor ./server/src/core/server.js",
