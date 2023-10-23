@@ -85,8 +85,7 @@ const deleteSchool = catchAsync(async (req, res, next) => {
         return next(new AppError('School not found', 404));
     }
 
-    const response = apiResponse(true, {message: 'School deleted successfully'});
-    return res.status(200).json(response);
+    return res.status(204).json({});
 });
 
 module.exports = {

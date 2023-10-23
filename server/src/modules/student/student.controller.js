@@ -2,7 +2,7 @@ const apiResponse = require("../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
-const {formatStudentData, formatStudentInSchoolData} = require("../../shared/utlis/format.utlis");
+const {formatStudentData, formatStudentInSchoolData, formatStudentInClassroomData} = require("../../shared/utlis/format.utlis");
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 const Student = require("./student.model");
@@ -21,7 +21,7 @@ exports.addStudentToSchool = catchAsync(async (req, res) => {
         school: school_id,
     });
 
-    const response = apiResponse(true, formatStudentData(newStudent));
+    const response = apiResponse(true, formatStudentInClassroomData(newStudent));
     return res.status(200).json(response);
 });
 
@@ -104,6 +104,5 @@ exports.deleteStudent = catchAsync(async (req, res, next) => {
         return next(new AppError('Student not found', 404));
     }
 
-    const response = apiResponse(true, { message: 'Student deleted successfully' });
-    return res.status(200).json(response);
+    return res.status(204).json({});
 });

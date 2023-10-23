@@ -54,14 +54,15 @@ const updateUser = catchAsync(async (req, res, next) => {
 const deleteUser = catchAsync(async (req, res, next) =>{
     const userId = req.params.id;
     validateMongoId(userId);
-    const user = await User.findByIdAndDelete({userId});
+    const user = await User.findByIdAndDelete(userId);
 
     if (!user){
         return next(new AppError("User not found", 404));
     }
-    const response = apiResponse(true, { message: 'User deleted successfully' });
-    return res.status(200).json(response);
+
+    return res.status(204).json({});
 });
+
 
 
 const getMe  = (req ,res , next) => {

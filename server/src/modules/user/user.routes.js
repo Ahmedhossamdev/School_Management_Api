@@ -18,7 +18,7 @@ router.route('').get(restrictTo(['superadmin']), getAllUsers)
 
 
 // PUT Methods
-router.route('/role/:id').put(restrictTo(['superadmin']), updateUser);
+router.route('/:id').put(restrictTo(['superadmin']), updateUser);
 
 
 // DELETE Methods

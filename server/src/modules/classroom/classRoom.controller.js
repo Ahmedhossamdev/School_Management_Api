@@ -189,6 +189,5 @@ exports.deleteClassroom = catchAsync(async (req, res, next) => {
     // Remove the classroom
     await Classroom.findByIdAndDelete(classroomId);
 
-    const response = apiResponse(true, { message: 'Classroom removed successfully' });
-    res.status(200).json(response);
+    res.status(200).json({});
 });

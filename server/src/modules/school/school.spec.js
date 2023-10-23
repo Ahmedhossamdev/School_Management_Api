@@ -64,14 +64,12 @@ describe('School Tests', () => {
     });
 
 
-    describe('DELETE /api/v1/school/:id', () => {
-        it('should update school by id', async () => {
-
-            const res = await server.delete(`/api/v1/school/${newSchoolId.toString()}`).set('Authorization', `Bearer ${userToken}`).send(updateSchool);
-            expect(res.status).toEqual(200);
-            expect(res.body.status).toEqual('success');
+    describe('DELETE /api/v1/school/:id' , () => {
+        it('should delete school by id' ,async () => {
+            const res = await server.delete(`/api/v1/school/${newSchoolId}`).set('Authorization', `Bearer ${userToken}`);
+            expect(res.status).toEqual(204);
         });
-    });
+    })
 
 });
 
