@@ -25,7 +25,7 @@ exports.signupValidator = [
         .withMessage('email must not be empty')
         .isEmail()
         .withMessage('Please enter a valid email address')
-        .custom(async (value, {req}) => {
+        .custom(async (value) => {
             const user = await User.findOne({
                 email: value,
             });
@@ -50,8 +50,8 @@ exports.signupValidator = [
         }),
     check("phoneNumber")
         .isMobilePhone('any')
-        .withMessage('Please enter a valid Saudi Arabian phone number')
-        .custom(async (value, {req}) => {
+        .withMessage('Please enter a valid phone number')
+        .custom(async (value) => {
             const user = await User.findOne({
                 phoneNumber: value,
             });
@@ -62,28 +62,35 @@ exports.signupValidator = [
     validatorMiddleware,
 ]
 
-
 exports.signInValidator = [
     check("email")
-        .custom(async (value, { req }) => {
+        .notEmpty()
+        .withMessage('Email must not be empty')
+        .isEmail()
+        .withMessage('Please enter a valid email address')
+        .bail() // stops the validation chain if previous validations have failed
+        .custom(async (value , {req}) => {
             const user = await User.findOne({ email: value });
 
             if (!user) {
                 throw new Error('Invalid credentials');
             }
-
             req.user = user;
             return true;
         }),
     check("password")
+        .notEmpty()
+        .withMessage('Password is required')
+        .bail() // stops the validation chain if previous validations have failed
         .custom(async (value, { req }) => {
-            const user = req.user;
-            console.log(value);
-            const isMatched = await user.correctPassword(value);
-            if (!isMatched || !user) {
+
+            if(!req.user){
                 throw new Error('Invalid credentials');
             }
-
+            const isMatched = await req.user.correctPassword(value);
+            if (!isMatched) {
+                throw new Error('Invalid credentials');
+            }
             return true;
         }),
     validatorMiddleware,
