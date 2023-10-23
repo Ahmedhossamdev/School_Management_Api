@@ -38,7 +38,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     }, { access_token: access_token, refresh_token: refresh_token });
 
 
-    res.status(200).json(response);
+    res.status(201).json(response);
 });
 
 
@@ -137,9 +137,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 // @desc RestrictTo Middleware
 exports.restrictTo = (roles) => {
     return (req, res, next) => {
-        console.log(roles);
         if (!roles.includes(req.user.role)) {
-            console.log(req.user.role);
             return next(new AppError('You do not have permission to perform this action', 403));
         }
         next();

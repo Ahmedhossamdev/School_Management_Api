@@ -3,21 +3,10 @@ const apiResponse = require("../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const Student = require("./student.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
-const {paginate} = require("../../shared/utlis/pagination");
+const {apiFeature} = require("../../shared/utlis/apiFeature");
 const School = require("../school/school.model");
+const {formatStudentData} = require("../../shared/utlis/format.utlis");
 
-
-const formatStudentData = student => ({
-    id: student._id,
-    name: student.name,
-    email: student.email,
-    contactNumber: student.contactNumber,
-    address: student.address,
-    classroom: student.classroom,
-    age: student.age,
-    gender: student.gender,
-    createdAt: student.createdAt,
-});
 
 exports.addStudentToSchool = catchAsync(async (req, res) => {
     const { name, age, gender, address, contactNumber, email, school } = req.body;
@@ -44,7 +33,7 @@ exports.getAllStudentsInSchool = catchAsync(async (req, res) => {
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = 10;
     const filter = { school: schoolId };
-    const result = await paginate(Student, filter, page, perPage);
+    const result = await apiFeature(Student, filter, page, perPage);
 
     const formattedData = result.data.map(formatStudentData);
 

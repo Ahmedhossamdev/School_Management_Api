@@ -26,13 +26,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 // Routes
-
 const authRouter = require("./../modules/auth/auth.routes");
 const schoolRouter = require("./../modules/school/school.routes");
 const studentRouter = require("./../modules/student/student.routes");
 const userRouter = require("./../modules/user/user.routes");
 const classRoomRouter = require("./../modules/classroom/classRoom.routes");
-
 
 
 app.use('/api/v1/auth', authRouter);
@@ -42,10 +40,12 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/classroom', classRoomRouter);
 
 
+
 // Unhandled routes
 app.use("*", (req, res, next) => {
     next(new AppError(`Route ${req.originalUrl} dose not exist`, 400));
 });
+
 
 
 // Error Handling middleware

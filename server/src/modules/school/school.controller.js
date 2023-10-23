@@ -2,20 +2,10 @@ const School = require("./school.model");
 const apiResponse = require("./../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const catchAsync = require("./../../shared/utlis/catchAsync");
-const {paginate} = require("../../shared/utlis/pagination");
+const {apiFeature} = require("../../shared/utlis/apiFeature");
 const Student = require("../student/student.model");
+const {formatSchoolData} = require("./../../shared/utlis/format.utlis");
 
-
-const formatSchoolData = school => ({
-    id: school._id,
-    name: school.name,
-    address: school.address,
-    website: school.website,
-    contactNumber: school.contactNumber,
-    establishedYear: school.establishedYear,
-    created_at: school.created_at,
-    updated_at: school.updated_at,
-});
 
 
 
@@ -30,14 +20,14 @@ const createSchool = catchAsync(async (req, res) => {
     });
 
     const response = apiResponse(true, formatSchoolData(newSchool));
-    return res.status(200).json(response);
+    return res.status(201).json(response);
 });
 
 const getAllSchools = catchAsync(async (req, res) => {
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = 10;
     const filter = {};
-    const result = await paginate(School, filter, page, perPage);
+    const result = await apiFeature(School, filter, page, perPage);
 
     const formattedData = result.data.map(formatSchoolData);
 
@@ -67,18 +57,12 @@ const getSchool = catchAsync(async (req, res, next) => {
 
 const updateSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
-    const {name, address, contactNumber, website, establishedYear} = req.body;
+    const updateFields = req.body;
 
     const updatedSchool = await School.findByIdAndUpdate(
         schoolId,
-        {
-            name,
-            address,
-            contactNumber,
-            website,
-            establishedYear,
-        },
-        {new: true, runValidators: true}
+        updateFields,
+        { new: true, runValidators: true }
     );
 
     if (!updatedSchool) {
@@ -88,6 +72,7 @@ const updateSchool = catchAsync(async (req, res, next) => {
     const response = apiResponse(true, formatSchoolData(updatedSchool));
     return res.status(200).json(response);
 });
+
 
 const deleteSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;

@@ -1,4 +1,4 @@
-const paginate = async (model, filter, page, perPage, populateOptions) => {
+const apiFeature = async (model, filter, page, perPage, populateOptions) => {
     const total = await model.countDocuments(filter);
     const totalPages = Math.ceil(total / perPage);
 
@@ -17,4 +17,4 @@ const paginate = async (model, filter, page, perPage, populateOptions) => {
     };
 };
 
-module.exports = {paginate};
+module.exports = {apiFeature};

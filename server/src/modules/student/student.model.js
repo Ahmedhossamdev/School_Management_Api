@@ -24,14 +24,6 @@ const studentSchema = new Schema({
     email: {
         type: String
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    },
     classroom: {
         type: Schema.Types.ObjectId,
         ref: 'Classroom'
@@ -39,16 +31,33 @@ const studentSchema = new Schema({
     school: {
         type: Schema.Types.ObjectId,
         ref: 'School'
-    }
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    },
 });
 
+
+// studentSchema.pre(/^find/ , function(next) {
+//     this.populate({
+//         path: 'school',
+//     });
+//     next();
+// });
 
 studentSchema.pre(/^find/ , function(next) {
     this.populate({
-        path: 'school',
+        path: 'classroom',
+        select : '_id name'
     });
     next();
 });
+
 
 
 
