@@ -1,7 +1,7 @@
 const redis = require('redis');
 
 const client = redis.createClient({
-    host: 'redis-16068.c17.us-east-1-4.ec2.cloud.redislabs.com',
+    host: process.env.REDIS_CLIENT,
     port: 16068,
     password: process.env.REDIS_SECRET,
 });
