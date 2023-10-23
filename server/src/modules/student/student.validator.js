@@ -7,7 +7,7 @@ const Student = require("./student.model");
 exports.createStudentValidator = [
 
     check("email")
-        .custom(async (value, { req }) => {
+        .custom(async (value) => {
             const student = await Student.findOne({ email: value });
 
             if (student) {
@@ -40,7 +40,7 @@ exports.createStudentValidator = [
     check("contactNumber")
         .isMobilePhone('any')
         .withMessage('Please enter a phone number')
-        .custom(async (value, {req}) => {
+        .custom(async (value) => {
             const user = await Student.findOne({
                 phoneNumber: value,
             });
@@ -55,7 +55,7 @@ exports.updateStudentValidator = [
 
     check("email")
         .optional()
-        .custom(async (value, { req }) => {
+        .custom(async (value) => {
             const student = await Student.findOne({ email: value });
 
             if (student) {
@@ -92,7 +92,7 @@ exports.updateStudentValidator = [
         .optional()
         .isMobilePhone('any')
         .withMessage('Please enter a phone number')
-        .custom(async (value, {req}) => {
+        .custom(async (value,) => {
             const user = await Student.findOne({
                 phoneNumber: value,
             });

@@ -10,12 +10,11 @@ const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 exports.createClassroom = catchAsync(async (req, res) => {
 
-
     const {name, school} = req.body;
     const newClassroom = await Classroom.create({name, school});
 
     const response = apiResponse(true, formatClassroomData(newClassroom));
-    res.status(200).json(response);
+    return res.status(200).json(response);
 });
 
 // Get All Classrooms
@@ -121,11 +120,11 @@ exports.getClassroom = catchAsync(async (req, res, next) => {
 exports.updateClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
     validateMongoId(classroomId);
-    const {name, school} = req.body;
+    const {name} = req.body;
 
     const updatedClassroom = await Classroom.findByIdAndUpdate(
         classroomId,
-        {name, school},
+        {name},
         {new: true, runValidators: true}
     );
 

@@ -1,10 +1,8 @@
-// Create Student
 const apiResponse = require("../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const Student = require("./student.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
-const School = require("../school/school.model");
 const {formatStudentData, formatStudentInSchoolData} = require("../../shared/utlis/format.utlis");
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 

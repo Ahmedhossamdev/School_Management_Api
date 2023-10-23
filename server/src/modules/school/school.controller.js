@@ -3,7 +3,6 @@ const apiResponse = require("./../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
-const Student = require("../student/student.model");
 const {formatSchoolData} = require("./../../shared/utlis/format.utlis");
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 

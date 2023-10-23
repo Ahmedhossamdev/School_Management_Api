@@ -21,7 +21,10 @@ const classroomSchema = new Schema({
     },
 });
 
-
+classroomSchema.pre('save', function (next) {
+    this.name = this.name.toLowerCase();
+    next();
+});
 
 
 const Classroom = mongoose.model('Classroom', classroomSchema);
