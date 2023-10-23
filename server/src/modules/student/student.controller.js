@@ -1,14 +1,16 @@
 const apiResponse = require("../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
-const Student = require("./student.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const {formatStudentData, formatStudentInSchoolData} = require("../../shared/utlis/format.utlis");
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 
+const Student = require("./student.model");
+const School = require("./../school/school.model")
+
 
 exports.addStudentToSchool = catchAsync(async (req, res) => {
-    const { name, age, gender, address, contactNumber, email, school } = req.body;
+    const { name, age, gender, address, contactNumber, email, school_id } = req.body;
     const newStudent = await Student.create({
         name,
         age,
@@ -16,7 +18,7 @@ exports.addStudentToSchool = catchAsync(async (req, res) => {
         address,
         contactNumber,
         email,
-        school: school,
+        school: school_id,
     });
 
     const response = apiResponse(true, formatStudentData(newStudent));
@@ -27,17 +29,20 @@ exports.addStudentToSchool = catchAsync(async (req, res) => {
 
 
 
-exports.getAllStudentsInSchool = catchAsync(async (req, res) => {
+exports.getAllStudentsInSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
     validateMongoId(schoolId);
+
+    // Check if the school exists
+    const school = await School.findById(schoolId);
+    if (!school){
+        return next(new AppError('School not found' , 404));
+    }
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = 10;
     const filter = { school: schoolId };
     const result = await apiFeature(Student, filter, page, perPage);
     const formattedData = result.data.map(formatStudentInSchoolData);
-
-
-
     const response = apiResponse(true, formattedData, {
         total: result.total,
         pages: result.totalPages,

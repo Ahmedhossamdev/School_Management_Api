@@ -21,6 +21,14 @@ const classroomSchema = new Schema({
     },
 });
 
+// classroomSchema.pre(/^find/ , function(next) {
+//     this.populate({
+//         path: 'school',
+//     });
+//     next();
+// });
+//
+
 classroomSchema.pre('save', function (next) {
     this.name = this.name.toLowerCase();
     next();

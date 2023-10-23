@@ -1,7 +1,7 @@
 const {check} = require("express-validator");
 const validatorMiddleware = require("./../../shared/middlewares/validator.middleware");
 const Student = require("./student.model");
-
+const School = require("./../school/school.model");
 
 
 exports.createStudentValidator = [
@@ -47,7 +47,16 @@ exports.createStudentValidator = [
             if (user) throw new Error('Phone number is already in use');
             return true
         }),
-
+    check("school_id")
+        .notEmpty()
+        .withMessage('Please enter a school id')
+        .custom(async (value) => {
+            const school = await School.findById(
+                 value,
+            );
+            if (!school) throw new Error('School not found');
+            return true
+        }),
     validatorMiddleware,
 ]
 

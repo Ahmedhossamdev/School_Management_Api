@@ -6,7 +6,7 @@ jest.setTimeout(seconds);
 
 // superadmin
 const userData = {
-    "email" : "ahmedhossamdev1@gmail.com",
+    "email" : "superadmin@gmail.com",
     "password": "Test1234"
 }
 
@@ -25,7 +25,7 @@ const updateSchool = {
 let newSchoolId;
 
 const server = supertest(app);
-describe('Comment Tests', () => {
+describe('School Tests', () => {
     let userToken;
     beforeAll(async () => {
         const res = await server.post('/api/v1/auth/signin').send(userData);
@@ -37,29 +37,29 @@ describe('Comment Tests', () => {
             const res = await server.post('/api/v1/school').set('Authorization', `Bearer ${userToken}`).send(school);
             newSchoolId = res.body.content.data.id;
             expect(res.status).toEqual(201);
-            expect(res.body.status).toEqual(true);
+            expect(res.body.status).toEqual('success');
         });
     });
     describe('GET /api/v1/school', () => {
         it('should get all schools', async () => {
             const res = await server.get('/api/v1/school').set('Authorization', `Bearer ${userToken}`);
             expect(res.status).toEqual(200);
-            expect(res.body.status).toEqual(true);
+            expect(res.body.status).toEqual('success');
         });
     });
     describe('GET /api/v1/school/:id', () => {
         it('should get school by id', async () => {
-            const res = await server.get('/api/v1/school/65343b37f36e065520cd72bc').set('Authorization', `Bearer ${userToken}`);
+            const res = await server.get(`/api/v1/school/${newSchoolId}`).set('Authorization', `Bearer ${userToken}`);
             expect(res.status).toEqual(200);
-            expect(res.body.status).toEqual(true);
+            expect(res.body.status).toEqual('success');
         });
     });
 
     describe('PUT /api/v1/school/:id', () => {
         it('should update school by id', async () => {
-            const res = await server.put('/api/v1/school/65343b37f36e065520cd72bc').set('Authorization', `Bearer ${userToken}`).send(updateSchool);
+            const res = await server.put(`/api/v1/school/${newSchoolId}`).set('Authorization', `Bearer ${userToken}`).send(updateSchool);
             expect(res.status).toEqual(200);
-            expect(res.body.status).toEqual(true);
+            expect(res.body.status).toEqual('success');
         });
     });
 
@@ -69,7 +69,7 @@ describe('Comment Tests', () => {
 
             const res = await server.delete(`/api/v1/school/${newSchoolId.toString()}`).set('Authorization', `Bearer ${userToken}`).send(updateSchool);
             expect(res.status).toEqual(200);
-            expect(res.body.status).toEqual(true);
+            expect(res.body.status).toEqual('success');
         });
     });
 

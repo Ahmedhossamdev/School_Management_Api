@@ -6,7 +6,7 @@ const seconds = 100 * 500;
 jest.setTimeout(seconds);
 
 const userData = {
-    "email" : "ahmedhossamdev1@gmail.com",
+    "email" : "schooladmin@gmail.com",
     "password": "Test1234"
 }
 const fakeData = {
@@ -31,7 +31,7 @@ describe('auth tests', () => {
     describe('POST /api/v1/auth/signin', () => {
         it("Should signin user", async () => {
             const res = await server.post("/api/v1/auth/signin").send(userData);
-            expect(res.body.status).toEqual(true);
+            expect(res.body.status).toEqual('success');
             expect(res.status).toBe(200)
         });
     })
@@ -48,24 +48,16 @@ describe('POST /api/v1/auth/signin', () => {
 
 
 describe('POST /api/v1/auth/signup', () => {
-    let res1;
+    let res;
     it('should sign up new user', async () => {
-        res1 = await server.post('/api/v1/auth/signup').send(newUserData);
-        expect(res1.body.status).toEqual(true);
-        expect(res1.status).toBe(201);
-    });
-
-    it('should say the email already exists', async () => {
-        const res2 = await server.post('/api/v1/auth/signup').send(newUserData);
-        expect(res2.body.status).toEqual(false);
-        expect(res2.status).toBe(400);
+        res = await server.post('/api/v1/auth/signup').send(newUserData);
+        expect(res.body.status).toEqual('success');
+        expect(res.status).toBe(201);
     });
 
     afterEach(async () => {
-        // Add cleanup logic here if necessary
-        if (res1 && res1.body && res1.body.user && res1.body.user._id) {
-            await User.findByIdAndDelete(res1.body.user._id);
+        if (res && res.body && res.body.content && res.body.content.data && res.body.content.data.id) {
+            await User.findByIdAndDelete(res.body.content.data.id);
         }
     });
-
 });

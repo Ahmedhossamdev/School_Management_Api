@@ -1,5 +1,11 @@
 const express = require('express');
-const { createClassroom, getAllClassrooms, getClassroom, updateClassroom, deleteClassroom, addStudentToClass } = require("./classroom.controller");
+const { createClassroom,
+    getAllClassroomsInSchool,
+    getClassroom,
+    updateClassroom,
+    deleteClassroom,
+    addStudentToClass
+} = require("./classroom.controller");
 const { protect, restrictTo } = require("../auth/auth.controller");
 const { createClassroomValidator,
     addStudentToClassValidator,
@@ -16,7 +22,7 @@ router.route('').post(restrictTo(['admin']) , createClassroomValidator ,createCl
 router.route('/add-student').post(restrictTo(['admin']) , addStudentToClassValidator ,addStudentToClass);
 
 router.route('/:id/students').get(restrictTo(['admin']), getAllStudentsInClassroom);
-router.route('/school/:id').get(restrictTo(['admin']), getAllClassrooms);
+router.route('/school/:id').get(restrictTo(['admin']), getAllClassroomsInSchool);
 router.route('/:id').get(restrictTo(['admin']), getClassroom);
 
 router.route('/remove-student').put(restrictTo(['admin']) , removeStudentFromClassValidator ,removeStudentFromClass);

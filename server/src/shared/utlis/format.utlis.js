@@ -21,6 +21,19 @@ const formatStudentInSchoolData = student => ({
     updated_at: student.updated_at,
 });
 
+const formatStudentInClassroomData = student => ({
+    id: student._id,
+    name: student.name,
+    email: student.email,
+    contactNumber: student.contactNumber,
+    address: student.address,
+    age: student.age,
+    gender: student.gender,
+    created_at: student.created_at,
+    updated_at: student.updated_at,
+});
+
+
 
 const formatStudentData = student => ({
     id: student._id,
@@ -69,4 +82,5 @@ module.exports = {
     formatSchoolData,
     formatStudentInSchoolData,
     formatAuthData,
+    formatStudentInClassroomData,
 };
