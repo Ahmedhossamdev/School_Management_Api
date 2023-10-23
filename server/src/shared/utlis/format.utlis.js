@@ -5,6 +5,23 @@ const formatClassroomData = classroom => ({
     updated_at: classroom.updated_at
 });
 
+const formatStudentInSchoolData = student => ({
+    id: student._id,
+    name: student.name,
+    email: student.email,
+    contactNumber: student.contactNumber,
+    address: student.address,
+    age: student.age,
+    gender: student.gender,
+    classroom: student.classroom ? {
+        id: student.classroom._id,
+        name: student.classroom.name,
+    } : null,
+    created_at: student.created_at,
+    updated_at: student.updated_at,
+});
+
+
 const formatStudentData = student => ({
     id: student._id,
     name: student.name,
@@ -13,10 +30,14 @@ const formatStudentData = student => ({
     address: student.address,
     age: student.age,
     gender: student.gender,
-    classroom: {
+    school: student.school ? {
+        id: student.school._id,
+        name: student.school.name,
+    } : null,
+    classroom: student.classroom ? {
         id: student.classroom._id,
         name: student.classroom.name,
-    },
+    } : null,
     created_at: student.created_at,
     updated_at: student.updated_at,
 });
@@ -46,4 +67,6 @@ module.exports = {
     formatClassroomData,
     formatStudentData,
     formatSchoolData,
+    formatStudentInSchoolData,
+    formatAuthData,
 };

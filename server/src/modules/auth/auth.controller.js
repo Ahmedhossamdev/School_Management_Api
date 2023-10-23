@@ -1,7 +1,6 @@
 const {
     generateAccessToken,
     generateRefreshToken,
-    verifyAccessToken,
     verifyRefreshToken
 } = require('./../../shared/helpers/jwt_helper')
 
@@ -12,11 +11,11 @@ const {promisify} = require('util');
 const jwt = require('jsonwebtoken');
 const apiResponse = require("./../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
-
+const {formatAuthData} = require("./../../shared/utlis/format.utlis");
 
 // @desc    Signup user
 // @route   POST /api/v1/auth/signup
-exports.signup = catchAsync(async (req, res, next) => {
+exports.signup = catchAsync(async (req, res) => {
     const { name, email, phoneNumber, password, passwordConfirm } = req.body;
     const newUser = await User.create({
         name,
@@ -30,13 +29,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     const access_token = await generateAccessToken(newUser._id);
     const refresh_token = await generateRefreshToken(newUser._id);
 
-    const response = apiResponse(true, {
-        id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-        phoneNumber: newUser.phoneNumber,
-    }, { access_token: access_token, refresh_token: refresh_token });
 
+    const response = apiResponse(true, formatAuthData(newUser), { access_token,refresh_token } );
 
     res.status(201).json(response);
 });
@@ -52,15 +46,7 @@ exports.signin = catchAsync(async (req, res, next) => {
     const access_token = await generateAccessToken(user._id);
     const refresh_token = await generateRefreshToken(user._id);
 
-
-    const response = apiResponse(true, {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        created_at: user.created_at,
-    }, {access_token: access_token, refresh_token: refresh_token});
-
+    const response = apiResponse(true, formatAuthData(user), {access_token,refresh_token});
     res.status(200).json(response);
 
 });
@@ -101,10 +87,8 @@ exports.logout = catchAsync(async (req, res, next) => {
         }
     });
 
-    res.status(204).json({
-        status: 'true',
-        message: 'Logged out successfully',
-    });
+    const response = apiResponse(true , {message: 'Logged out successfully'})
+    res.status(204).json(response);
 });
 
 

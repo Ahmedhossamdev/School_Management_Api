@@ -5,6 +5,7 @@ const catchAsync = require("./../../shared/utlis/catchAsync");
 const User = require("./user.model");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const School = require("../school/school.model");
+const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 const formatUserData = user => ({
     id: user._id,
@@ -33,19 +34,14 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 
-const updateUserRole = catchAsync(async (req, res, next) => {
-    const role = req.body.role;
+const updateUser = catchAsync(async (req, res, next) => {
+    const updateFields = req.body;
     const userId = req.params.id;
-
-    if (role !== 'superadmin' && role !== 'admin' && role !== 'teacher' && role !== 'student'){
-          return next(new AppError("Enter a valid role", 402));
-    }
+    validateMongoId(userId);
     const user = await User.findByIdAndUpdate(
         userId,
-        {
-            role,
-        },
-        {new: true, runValidators: true}
+        updateFields,
+        { new: true, runValidators: true }
     );
 
     if (!user) {
@@ -56,6 +52,18 @@ const updateUserRole = catchAsync(async (req, res, next) => {
     return res.status(200).json(response);
 });
 
+
+const deleteUser = catchAsync(async (req, res, next) =>{
+    const userId = req.params.id;
+    validateMongoId(userId);
+    const user = await User.findByIdAndDelete({userId});
+
+    if (!user){
+        return next(new AppError("User not found", 404));
+    }
+    const response = apiResponse(true, { message: 'User deleted successfully' });
+    return res.status(200).json(response);
+});
 
 
 const getMe  = (req ,res , next) => {
@@ -79,6 +87,6 @@ const getUser = catchAsync(async(req , res , next) =>{
 
 
 
-module.exports = {updateUserRole , getUser, getMe , getAllUsers};
+module.exports = {updateUser, getUser, getMe, getAllUsers, deleteUser};
 
 

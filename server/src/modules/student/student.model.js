@@ -43,12 +43,12 @@ const studentSchema = new Schema({
 });
 
 
-// studentSchema.pre(/^find/ , function(next) {
-//     this.populate({
-//         path: 'school',
-//     });
-//     next();
-// });
+studentSchema.pre(/^find/ , function(next) {
+    this.populate({
+        path: 'school',
+    });
+    next();
+});
 
 studentSchema.pre(/^find/ , function(next) {
     this.populate({

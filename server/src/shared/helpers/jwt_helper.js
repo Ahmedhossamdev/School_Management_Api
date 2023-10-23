@@ -1,10 +1,8 @@
 const jwt = require('jsonwebtoken');
 const client = require('./../helpers/inti_redis');
 const AppError = require("../utlis/appError");
-const createError = require("http-errors");
 
 
-// TODO ERROR HANDLING USING APP ERROR CLASS NOT HTTP ERRORS PACKAGE
 module.exports = {
 
     generateAccessToken: (userId) => {
@@ -27,7 +25,7 @@ module.exports = {
 
     verifyAccessToken: (req, res, next) => {
         const authHeader = req.headers['authorization']
-        if (!authHeader) return next(new AppError('Invalid authorization header' , 401));
+        if (!authHeader) return next(new AppError('Invalid authorization header', 401));
         const bearerToken = authHeader.split(' ')
 
         const token = bearerToken[1]
@@ -52,13 +50,14 @@ module.exports = {
             jwt.sign(payload, secret, options, (err, token) => {
                 if (err) {
                     console.log(err.message);
-                    reject(new AppError("Server Error",505));
+                    return reject(new AppError("Server Error", 505));
+                    return;
                 }
                 //resolve(token)
-                client.SET(userId.toString() ,token, 'EX', 30 * 24 * 60 * 60 ,(err, reply) => {
+                client.SET(userId.toString(), token, 'EX', 30 * 24 * 60 * 60, (err, reply) => {
                     if (err) {
                         console.log(err.message);
-                        reject(new AppError("Server Error",505));
+                        return reject(new AppError("Server Error", 505));
                         return
                     }
                     resolve(token)
@@ -73,18 +72,18 @@ module.exports = {
         return new Promise((resolve, reject) => {
             jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET, (err, payload) => {
                 if (err) {
-                    return reject(createError.Unauthorized());
+                    return reject(new AppError('Invalid refresh token', 401));
                 }
                 const userId = payload.aud;
 
                 client.GET(userId, (err, result) => {
                     if (err) {
-                        reject(InternalServerError());
+                        return reject(new AppError('Server Error', 505));
                     }
                     if (refreshToken === result) {
                         resolve(userId);
                     } else {
-                        reject(createError(401, 'Unauthorized'));
+                        return reject(new AppError('Server Error', 505));
                     }
                 });
             });

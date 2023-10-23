@@ -5,7 +5,8 @@ const Student = require("./student.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const School = require("../school/school.model");
-const {formatStudentData} = require("../../shared/utlis/format.utlis");
+const {formatStudentData, formatStudentInSchoolData} = require("../../shared/utlis/format.utlis");
+const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 
 exports.addStudentToSchool = catchAsync(async (req, res) => {
@@ -30,12 +31,14 @@ exports.addStudentToSchool = catchAsync(async (req, res) => {
 
 exports.getAllStudentsInSchool = catchAsync(async (req, res) => {
     const schoolId = req.params.id;
+    validateMongoId(schoolId);
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = 10;
     const filter = { school: schoolId };
     const result = await apiFeature(Student, filter, page, perPage);
+    const formattedData = result.data.map(formatStudentInSchoolData);
 
-    const formattedData = result.data.map(formatStudentData);
+
 
     const response = apiResponse(true, formattedData, {
         total: result.total,
@@ -48,11 +51,13 @@ exports.getAllStudentsInSchool = catchAsync(async (req, res) => {
 // Get Student by ID
 exports.getStudent = catchAsync(async (req, res, next) => {
     const studentId = req.params.id;
+    validateMongoId(studentId);
     const student = await Student.findById(studentId);
 
     if (!student) {
         return next(new AppError("Student not found", 404));
     }
+    console.log(student);
 
     const response = apiResponse(true, formatStudentData(student));
     return res.status(200).json(response);
@@ -61,6 +66,7 @@ exports.getStudent = catchAsync(async (req, res, next) => {
 // Update Student
 exports.updateStudent = catchAsync(async (req, res, next) => {
     const studentId = req.params.id;
+    validateMongoId(studentId);
     const { name, age, gender, address, contactNumber, email, classroom } = req.body;
 
     const updatedStudent = await Student.findByIdAndUpdate(
@@ -88,6 +94,7 @@ exports.updateStudent = catchAsync(async (req, res, next) => {
 // Delete Student
 exports.deleteStudent = catchAsync(async (req, res, next) => {
     const studentId = req.params.id;
+    validateMongoId(studentId);
     const deletedStudent = await Student.findByIdAndDelete(studentId);
 
     if (!deletedStudent) {

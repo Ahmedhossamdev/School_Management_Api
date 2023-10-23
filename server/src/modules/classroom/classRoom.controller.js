@@ -5,6 +5,7 @@ const Student = require("./../student/student.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const {formatClassroomData, formatStudentData} = require("../../shared/utlis/format.utlis");
+const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 
 exports.createClassroom = catchAsync(async (req, res) => {
@@ -84,6 +85,7 @@ exports.removeStudentFromClass = catchAsync(async (req, res, next) => {
 
 exports.getAllStudentsInClassroom = catchAsync(async (req, res) => {
     const classroomId = req.params.id;
+    validateMongoId(classroomId);
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = 10;
     const filter = {classroom: classroomId};
@@ -104,6 +106,7 @@ exports.getAllStudentsInClassroom = catchAsync(async (req, res) => {
 // Get Classroom by ID
 exports.getClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
+    validateMongoId(classroomId);
     const classroom = await Classroom.findById(classroomId);
 
     if (!classroom) {
@@ -117,6 +120,7 @@ exports.getClassroom = catchAsync(async (req, res, next) => {
 // Update Classroom
 exports.updateClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
+    validateMongoId(classroomId);
     const {name, school} = req.body;
 
     const updatedClassroom = await Classroom.findByIdAndUpdate(
@@ -136,6 +140,7 @@ exports.updateClassroom = catchAsync(async (req, res, next) => {
 // Delete Classroom
 exports.deleteClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
+    validateMongoId(classroomId);
     const deletedClassroom = await Classroom.findByIdAndDelete(classroomId);
 
     if (!deletedClassroom) {

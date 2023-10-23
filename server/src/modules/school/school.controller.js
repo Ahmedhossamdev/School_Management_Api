@@ -5,6 +5,7 @@ const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const Student = require("../student/student.model");
 const {formatSchoolData} = require("./../../shared/utlis/format.utlis");
+const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 
 
@@ -45,6 +46,7 @@ const getAllSchools = catchAsync(async (req, res) => {
 
 const getSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
+    validateMongoId(schoolId);
     const school = await School.findById(schoolId);
 
     if (!school) {
@@ -57,6 +59,7 @@ const getSchool = catchAsync(async (req, res, next) => {
 
 const updateSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
+    validateMongoId(schoolId);
     const updateFields = req.body;
 
     const updatedSchool = await School.findByIdAndUpdate(
@@ -76,6 +79,7 @@ const updateSchool = catchAsync(async (req, res, next) => {
 
 const deleteSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
+    validateMongoId(schoolId);
     const deletedSchool = await School.findByIdAndDelete(schoolId);
 
     if (!deletedSchool) {
