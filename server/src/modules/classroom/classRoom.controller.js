@@ -2,16 +2,22 @@ const apiResponse = require("../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const Classroom = require("./classRoom.model");
 const Student = require("./../student/student.model");
+const School = require("./../school/school.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const {formatClassroomData, formatStudentData} = require("../../shared/utlis/format.utlis");
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 
-exports.createClassroom = catchAsync(async (req, res) => {
+exports.createClassroom = catchAsync(async (req, res, next) => {
 
-    const {name, school} = req.body;
-    const newClassroom = await Classroom.create({name, school});
+    const {name, school_id} = req.body;
+    validateMongoId(school_id);
+    const school = await School.findById(school_id);
+    if (!school){
+         return next(new AppError("School not found" , 404));
+    }
+    const newClassroom = await Classroom.create({name, school_id});
 
     const response = apiResponse(true, formatClassroomData(newClassroom));
     return res.status(200).json(response);
@@ -39,6 +45,8 @@ exports.getAllClassrooms = catchAsync(async (req, res) => {
 exports.addStudentToClass = catchAsync(async (req, res, next) => {
     const {student_id, classroom_id} = req.body;
 
+    validateMongoId(student_id);
+    validateMongoId(classroom_id);
     const student = await Student.findById(student_id);
     if (!student) {
         return next(new AppError("Student Not Found", 404))

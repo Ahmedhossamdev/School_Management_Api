@@ -6,15 +6,16 @@ const ClassRoom = require("../classroom/classRoom.model");
 exports.createClassroomValidator = [
 
     check("name")
-        .custom(async (value) => {
-            const name = value.toLowerCase();
-            const classRoomName = await ClassRoom.findOne({ name: name });
+        .custom(async (value, { req }) => {
+        const name = value.toLowerCase();
+        const schoolId = req.body.school_id;
+        const classRoomName = await ClassRoom.findOne({ name: name, school: schoolId });
 
-            if (classRoomName) {
-                throw new Error('Classroom name already exists');
-            }
-            return true;
-        })
+        if (classRoomName) {
+            throw new Error('Classroom name already exists in this school');
+        }
+        return true;
+    })
 
         .notEmpty()
         .withMessage('Name is required')
@@ -22,7 +23,7 @@ exports.createClassroomValidator = [
         .withMessage('Name must be between 2 to 50 characters'),
 
 
-    check("school")
+    check("school_id")
         .notEmpty()
         .withMessage('School must not be empty'),
 
