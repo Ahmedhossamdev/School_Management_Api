@@ -19,7 +19,6 @@ exports.createClassroom = catchAsync(async (req, res, next) => {
     }
 
     const newClassroom = await Classroom.create({ name, school: school._id });
-    console.log(newClassroom);
 
     const response = apiResponse(true, formatClassroomData(newClassroom));
     return res.status(200).json(response);

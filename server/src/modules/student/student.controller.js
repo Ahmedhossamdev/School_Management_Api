@@ -60,7 +60,6 @@ exports.getStudent = catchAsync(async (req, res, next) => {
     if (!student) {
         return next(new AppError("Student not found", 404));
     }
-    console.log(student);
 
     const response = apiResponse(true, formatStudentData(student));
     return res.status(200).json(response);

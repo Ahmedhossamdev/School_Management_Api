@@ -82,7 +82,6 @@ exports.logout = catchAsync(async (req, res, next) => {
     const userId = await verifyRefreshToken(refreshToken);
     client.DEL(userId, (err, val) => {
         if (err) {
-            console.log(err.message);
             return next(new AppError("Please try again", 402));
         }
     });
