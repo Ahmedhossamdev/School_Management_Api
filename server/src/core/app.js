@@ -5,8 +5,10 @@ const AppError = require("../shared/utlis/appError");
 const globalErrorHandler = require('../shared/utlis/error.handling');
 const express = require('express');
 const app = express();
-const helmet = require("helmet");
 const morgan = require("morgan");
+const compression = require('compression');
+const cors = require("cors");
+
 
 app.set('view engine' , 'pug');
 
@@ -21,6 +23,9 @@ db();
 
 
 // public middlewares
+app.use(cors());
+app.options('*', cors());
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -32,6 +37,7 @@ const schoolRouter = require("./../modules/school/school.routes");
 const studentRouter = require("./../modules/student/student.routes");
 const userRouter = require("./../modules/user/user.routes");
 const classRoomRouter = require("../modules/classroom/classroom.routes");
+
 
 
 app.use('/api/v1/auth', authRouter);
@@ -48,7 +54,9 @@ app.use("*", (req, res, next) => {
 });
 
 
-
+app.use("/", (req, res, next) => {
+    res.send("School Management System");
+});
 // Error Handling middleware
 app.use(globalErrorHandler);
 
