@@ -6,6 +6,20 @@ The School Management System is a comprehensive platform designed to facilitate 
 
 The school management system is currently deployed and accessible at [https://school-mangment-system.onrender.com/](https://school-mangment-system.onrender.com/).
 
+### How to test the api
+
+To test the API, follow these steps:
+
+1. Sign in with the following superadmin account details:
+    - Email: [superadmin@gmail.com](https://mailto:superadmin@gmail.com)
+    - Password: Test1234
+2. Once signed in, create a new user. Set the role of the new account to 'superadmin' using the superadmin account.
+3. Additionally, you can use the following school admin account to perform further tests:
+    - Email: [schooladmin@gmail.com](https://mailto:schooladmin@gmail.com)
+    - Password: Test1234
+
+Make sure to follow the steps precisely as mentioned in the Markdown format while testing the API.
+
 ### Entity Overview
 
 1. **Authentication:** The system includes user authentication features such as sign-in, sign-up, and logout. Redis is used to manage refresh tokens for improved security and efficient user session management.
@@ -32,7 +46,7 @@ The school management system is currently deployed and accessible at [https://sc
 
 ### Model:
 
-<img src="https://content.pstmn.io/dd198c59-9afa-46dc-a28e-ad4907452bec/Z3JhcGh2aXoucG5n">
+<img src="https://content.pstmn.io/41e58c6d-87c2-44ac-b8da-fec71208f666/ZXJkLnBuZw==">
 
 ## User
 
@@ -87,6 +101,8 @@ The school management system is currently deployed and accessible at [https://sc
 | updated_at | datetime | \- |
 
 ### Endpoints
+
+Note!.. All API responses have a fixed structure.
 
 #### School Endpoints
 
