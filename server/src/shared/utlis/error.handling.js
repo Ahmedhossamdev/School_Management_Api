@@ -43,14 +43,11 @@ const sendErrorDev = (err, req, res) => {
             stack: err.stack
         });
     }
-    return res.status(err.statusCode).send('error', {
+    return res.status(err.statusCode).render('error', {
         title: 'Something went wrong!',
         message: err.message
     });
 };
-
-
-
 
 const sendErrorProd = (err, req, res) => {
     if (req.originalUrl.startsWith('/api')) {
@@ -69,19 +66,16 @@ const sendErrorProd = (err, req, res) => {
 
     if (err.isOperational) {
         console.log(err);
-        return res.status(err.statusCode).send('error', {
+        return res.status(err.statusCode).render('error', {
             title: 'Something went wrong!',
             message: err.message
         });
     }
-    return res.status(err.statusCode).send('error', {
+    return res.status(err.statusCode).render('error', {
         title: 'Something went wrong!',
         message: 'Please try again later.'
     });
 };
-
-
-
 
 
 module.exports = (err, req, res, next) => {
