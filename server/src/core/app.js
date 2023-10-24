@@ -47,6 +47,9 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/classroom', classRoomRouter);
 
 
+app.use("/", (req, res, next) => {
+    res.send("School Management System");
+});
 
 // Unhandled routes
 app.use("*", (req, res, next) => {
@@ -54,9 +57,7 @@ app.use("*", (req, res, next) => {
 });
 
 
-app.use("/", (req, res, next) => {
-    res.send("School Management System");
-});
+
 // Error Handling middleware
 app.use(globalErrorHandler);
 
