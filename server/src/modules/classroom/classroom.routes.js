@@ -12,7 +12,7 @@ const { createClassroomValidator,
     removeStudentFromClassValidator,
     updateClassroomValidator,
 } = require("./classroom.validator");
-const {getAllStudentsInClassroom, removeStudentFromClass} = require("./classRoom.controller");
+const {getAllStudentsInClassroom, removeStudentFromClass} = require("./classroom.controller");
 
 const router = express.Router();
 

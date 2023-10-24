@@ -1,7 +1,7 @@
 
 const {check} = require("express-validator");
 const validatorMiddleware = require("./../../shared/middlewares/validator.middleware");
-const ClassRoom = require("../classroom/classRoom.model");
+const ClassRoom = require("./classroom.model");
 
 exports.createClassroomValidator = [
 

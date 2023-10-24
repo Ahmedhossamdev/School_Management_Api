@@ -1,6 +1,6 @@
 const apiResponse = require("../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
-const Classroom = require("./classRoom.model");
+const Classroom = require("./classroom.model");
 const Student = require("./../student/student.model");
 const School = require("./../school/school.model");
 const catchAsync = require("./../../shared/utlis/catchAsync");
