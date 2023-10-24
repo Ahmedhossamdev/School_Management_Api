@@ -19,7 +19,7 @@ const pingServer = () => {
 };
 
 // Define the interval (in milliseconds) at which you want to ping the server
-const intervalTime = 5000; // 5 minutes
+const intervalTime = 5000;
 
 // Set up the timer to ping the server at regular intervals
 const interval = setInterval(pingServer, intervalTime);
