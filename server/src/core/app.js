@@ -8,6 +8,7 @@ const app = express();
 const helmet = require("helmet");
 const morgan = require("morgan");
 
+app.set('view engine' , 'pug');
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
