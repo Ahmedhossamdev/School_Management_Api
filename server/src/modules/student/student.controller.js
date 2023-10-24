@@ -9,6 +9,15 @@ const Student = require("./student.model");
 const School = require("./../school/school.model")
 
 
+
+
+/***
+ * @async
+ * @description Add student to school
+ * @route       POST  /api/v1/student
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.addStudentToSchool = catchAsync(async (req, res) => {
     const { name, age, gender, address, contactNumber, email, school_id } = req.body;
     const newStudent = await Student.create({
@@ -28,7 +37,13 @@ exports.addStudentToSchool = catchAsync(async (req, res) => {
 
 
 
-
+/***
+ * @async
+ * @description Get all students in school
+ * @route       GET  /api/v1/student/school/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.getAllStudentsInSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
     validateMongoId(schoolId);
@@ -51,7 +66,13 @@ exports.getAllStudentsInSchool = catchAsync(async (req, res, next) => {
     return res.status(200).json(response);
 });
 
-// Get Student by ID
+/***
+ * @async
+ * @description Get student by id
+ * @route       GET  /api/v1/student/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.getStudent = catchAsync(async (req, res, next) => {
     const studentId = req.params.id;
     validateMongoId(studentId);
@@ -65,7 +86,13 @@ exports.getStudent = catchAsync(async (req, res, next) => {
     return res.status(200).json(response);
 });
 
-// Update Student
+/***
+ * @async
+ * @description Update student by id
+ * @route       PUT  /api/v1/student/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.updateStudent = catchAsync(async (req, res, next) => {
     const studentId = req.params.id;
     validateMongoId(studentId);
@@ -93,7 +120,15 @@ exports.updateStudent = catchAsync(async (req, res, next) => {
     return res.status(200).json(response);
 });
 
-// Delete Student
+
+
+/***
+ * @async
+ * @description Delete student by id
+ * @route       DELETE  /api/v1/student/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.deleteStudent = catchAsync(async (req, res, next) => {
     const studentId = req.params.id;
     validateMongoId(studentId);

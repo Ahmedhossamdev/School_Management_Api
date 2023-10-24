@@ -5,17 +5,18 @@ const User = require("./user.model");
 const {apiFeature} = require("../../shared/utlis/apiFeature");
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 
-const formatUserData = user => ({
-    id: user._id,
-    name: user.name,
-    phoneNumber: user.phoneNumber,
-    email: user.email,
-    role: user.role,
-    photo: user.photo,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
-});
+const{ formatUserData} = require("./../../shared/utlis/format.utlis");
 
+
+
+/**
+ * @async
+ * @description Get all users
+ * @route       GET api/v1/user
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 
 const getAllUsers = catchAsync(async (req, res, next) => {
     const page = req.query.page ? parseInt(req.query.page) : 1;
@@ -31,6 +32,16 @@ const getAllUsers = catchAsync(async (req, res, next) => {
      res.status(200).json(response);
 });
 
+
+
+/**
+ * @async
+ * @description Update user by id
+ * @route       PUT api/v1/user/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 
 const updateUser = catchAsync(async (req, res, next) => {
     const updateFields = req.body;
@@ -51,6 +62,16 @@ const updateUser = catchAsync(async (req, res, next) => {
 });
 
 
+
+/**
+ * @async
+ * @description Delete user by id
+ * @route       DELETE api/v1/user/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
+
 const deleteUser = catchAsync(async (req, res, next) =>{
     const userId = req.params.id;
     validateMongoId(userId);
@@ -65,12 +86,22 @@ const deleteUser = catchAsync(async (req, res, next) =>{
 
 
 
+
 const getMe  = (req ,res , next) => {
     req.params.id = req.user.id;
     next();
 }
 
 
+
+/**
+ * @async
+ * @description  Get user by id
+ * @route        GET api/v1/user/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 const getUser = catchAsync(async(req , res , next) =>{
     const userId = req.params.id;
     const user = await User.findById(userId);

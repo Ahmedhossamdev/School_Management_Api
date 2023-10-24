@@ -8,7 +8,13 @@ const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 
 
-
+/**
+ * @async
+ * @description Create new school
+ * @route       POST /api/v1/school
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 const createSchool = catchAsync(async (req, res) => {
     const {name, address, contactNumber, website, establishedYear} = req.body;
     const newSchool = await School.create({
@@ -23,6 +29,15 @@ const createSchool = catchAsync(async (req, res) => {
     return res.status(201).json(response);
 });
 
+
+
+/**
+ * @async
+ * @description Get all school
+ * @route       GET /api/v1/school
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 const getAllSchools = catchAsync(async (req, res) => {
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = 10;
@@ -41,8 +56,13 @@ const getAllSchools = catchAsync(async (req, res) => {
 
 
 
-
-
+/***
+* @async
+* @description Get school by id
+* @route       GET /api/v1/school/:id
+* @param       {Object} req - Express request object
+* @param       {Object} res - Express response object
+*/
 const getSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
     validateMongoId(schoolId);
@@ -56,6 +76,14 @@ const getSchool = catchAsync(async (req, res, next) => {
     return res.status(200).json(response);
 });
 
+
+/***
+ * @async
+ * @description Update school by id
+ * @route       PUT /api/v1/school/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 const updateSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
     validateMongoId(schoolId);
@@ -75,7 +103,13 @@ const updateSchool = catchAsync(async (req, res, next) => {
     return res.status(200).json(response);
 });
 
-
+/***
+ * @async
+ * @description Delete school by id
+ * @route       DELETE /api/v1/school/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 const deleteSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
     validateMongoId(schoolId);

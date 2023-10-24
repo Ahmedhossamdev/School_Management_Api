@@ -24,6 +24,7 @@ const intervalTime = 5000;
 // Set up the timer to ping the server at regular intervals
 const interval = setInterval(pingServer, intervalTime);
 
+
 // If you want to stop the timer after a certain period, you can use setTimeout
 // For example, to stop the timer after 1 hour (3600000 milliseconds):
 // setTimeout(() => clearInterval(interval), 3600000);

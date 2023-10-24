@@ -9,6 +9,15 @@ const {formatClassroomData, formatStudentData, formatStudentInClassroomData} = r
 const {validateMongoId} = require("../../config/validate.mongodb.id");
 
 
+
+/**
+ * @async
+ * @description Create classroom
+ * @route       POST /api/v1/classroom
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.createClassroom = catchAsync(async (req, res, next) => {
     const { name, school_id } = req.body;
     validateMongoId(school_id);
@@ -25,7 +34,16 @@ exports.createClassroom = catchAsync(async (req, res, next) => {
 });
 
 
-// Get All Classrooms
+
+
+/**
+ * @async
+ * @description Get All class in school
+ * @route       GET /api/v1/classroom
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.getAllClassroomsInSchool = catchAsync(async (req, res, next) => {
     const schoolId = req.params.id;
     validateMongoId(schoolId);
@@ -52,6 +70,15 @@ exports.getAllClassroomsInSchool = catchAsync(async (req, res, next) => {
 });
 
 
+
+/**
+ * @async
+ * @description Add student to classroom in specified school
+ * @route       POST /api/v1/classroom/add-student
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.addStudentToClass = catchAsync(async (req, res, next) => {
     const { student_id, classroom_id } = req.body;
 
@@ -84,6 +111,15 @@ exports.addStudentToClass = catchAsync(async (req, res, next) => {
 
 
 
+
+/**
+ * @async
+ * @description Add student to classroom in specified school
+ * @route       PUT /api/v1/classroom/remove-student
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.removeStudentFromClass = catchAsync(async (req, res, next) => {
     const { student_id, classroom_id } = req.body;
 
@@ -109,6 +145,13 @@ exports.removeStudentFromClass = catchAsync(async (req, res, next) => {
 });
 
 
+/**
+ * @async
+ * @description Get all students in classroom
+ * @route       GET /api/v1/classroom/:id/students
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.getAllStudentsInClassroom = catchAsync(async (req, res) => {
     const classroomId = req.params.id;
     validateMongoId(classroomId);
@@ -129,7 +172,14 @@ exports.getAllStudentsInClassroom = catchAsync(async (req, res) => {
 });
 
 
-// Get Classroom by ID
+/**
+ * @async
+ * @description Get classroom by id
+ * @route       POST /api/v1/classroom/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.getClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
     validateMongoId(classroomId);
@@ -145,7 +195,14 @@ exports.getClassroom = catchAsync(async (req, res, next) => {
 
 
 
-// Update Classroom
+/**
+ * @async
+ * @description Update classroom by id
+ * @route       PUT /api/v1/classroom/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.updateClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
     validateMongoId(classroomId);
@@ -165,7 +222,15 @@ exports.updateClassroom = catchAsync(async (req, res, next) => {
     res.status(200).json(response);
 });
 
-// Delete Classroom
+
+/**
+ * @async
+ * @description Delete classroom by id
+ * @route       DELETE /api/v1/classroom/:id
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.deleteClassroom = catchAsync(async (req, res, next) => {
     const classroomId = req.params.id;
     const schoolId = req.body.school_id;

@@ -13,8 +13,13 @@ const apiResponse = require("./../../shared/utlis/apiResponse");
 const AppError = require("../../shared/utlis/appError");
 const {formatAuthData} = require("./../../shared/utlis/format.utlis");
 
-// @desc    Signup user
-// @route   POST /api/v1/auth/signup
+/**
+ * @async
+ * @description Register a new user
+ * @route       POST api/v1/auth/signup
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
 exports.signup = catchAsync(async (req, res) => {
     const { name, email, phoneNumber, password, passwordConfirm } = req.body;
     const newUser = await User.create({
@@ -36,9 +41,14 @@ exports.signup = catchAsync(async (req, res) => {
 });
 
 
-// @desc    Sign In user
-// @route   POST  /api/v1/auth/signin
-exports.signin = catchAsync(async (req, res, next) => {
+/**
+ * @async
+ * @description Signin user
+ * @route       POST api/v1/auth/signin
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ */
+exports.signin = catchAsync(async (req, res) => {
 
     const {email} = req.body;
     const user = req.user;
@@ -52,8 +62,14 @@ exports.signin = catchAsync(async (req, res, next) => {
 });
 
 
-// @desc    generate new access token
-// @route   POST /api/v1/auth/refresh-token
+/**
+ * @async
+ * @description Generate new refresh token
+ * @route       POST api/v1/auth/refresh-token
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.refreshToken = catchAsync(async (req, res, next) => {
 
     const {refreshToken} = req.body;
@@ -72,8 +88,14 @@ exports.refreshToken = catchAsync(async (req, res, next) => {
 });
 
 
-// @desc    Logout user
-// @route   POST /api/v1/auth/logout
+/**
+ * @async
+ * @description Logout the user
+ * @route       DELETE api/v1/auth/logout
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.logout = catchAsync(async (req, res, next) => {
     const {refreshToken} = req.body
     if (!refreshToken) {
@@ -91,7 +113,13 @@ exports.logout = catchAsync(async (req, res, next) => {
 });
 
 
-// @desc Protected method
+/**
+ * @async
+ * @description Authorization
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.protect = catchAsync(async (req, res, next) => {
 
     // 1) Getting token and check if it exists
@@ -117,7 +145,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 
-// @desc RestrictTo Middleware
+/**
+ * @async
+ * @description ROLE Authorization
+ * @param       {Object} req - Express request object
+ * @param       {Object} res - Express response object
+ * @param       {Object} next - Express next middleware
+ */
 exports.restrictTo = (roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {

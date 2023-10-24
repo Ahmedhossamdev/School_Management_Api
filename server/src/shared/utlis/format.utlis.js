@@ -76,6 +76,19 @@ const formatAuthData = user => ({
         updated_at: user.updated_at,
 });
 
+
+const formatUserData = user => ({
+    id: user._id,
+    name: user.name,
+    phoneNumber: user.phoneNumber,
+    email: user.email,
+    role: user.role,
+    photo: user.photo,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+});
+
+
 module.exports = {
     formatClassroomData,
     formatStudentData,
@@ -83,4 +96,5 @@ module.exports = {
     formatStudentInSchoolData,
     formatAuthData,
     formatStudentInClassroomData,
+    formatUserData,
 };
